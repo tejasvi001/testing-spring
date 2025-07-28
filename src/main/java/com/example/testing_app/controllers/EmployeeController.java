@@ -2,6 +2,7 @@ package com.example.testing_app.controllers;
 
 
 import com.example.testing_app.dtos.EmployeeDTO;
+import com.example.testing_app.exceptions.ResourceNotFoundException;
 import com.example.testing_app.services.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> getEmployeeByID(@PathVariable Long id){
+    public ResponseEntity<EmployeeDTO> getEmployeeByID(@PathVariable Long id) throws ResourceNotFoundException {
         EmployeeDTO employeeDTO=employeeService.getEmployeeById(id);
         return ResponseEntity.ok(employeeDTO);
     }
@@ -41,5 +42,6 @@ public class EmployeeController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
         employeeService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

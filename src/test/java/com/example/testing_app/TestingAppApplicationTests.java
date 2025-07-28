@@ -24,12 +24,12 @@ class TestingAppApplicationTests {
 	@BeforeEach
 	void setUp(){
 		testNumber++;
-		log.info("Setting Up the test case"+ testNumber);
+        log.info("Setting Up the test case{}", testNumber);
 
 	}
 	@AfterEach
 	 void delete(){
-		log.info("Deallocating the testcase"+testNumber);
+        log.info("Deallocating the testcase{}", testNumber);
 
 	}
 	@Test
@@ -47,7 +47,7 @@ class TestingAppApplicationTests {
 		 assertThat(result).isEqualTo(8);
 	}
 	@Test
-	void test2(){
+	void testDivide(){
 		int a=5,b=0;
 		assertThatThrownBy(()->divide(a,b))
 				.isInstanceOf(ArithmeticException.class);
