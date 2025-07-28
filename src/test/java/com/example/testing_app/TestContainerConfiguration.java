@@ -9,14 +9,11 @@ import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration(proxyBeanMethods = false)
 public class TestContainerConfiguration {
-
-
-
     @Bean
     @ServiceConnection
     public MySQLContainer<?> mysqlContainer() {
-        return new MySQLContainer<>(DockerImageName.parse("mysql:latest"));
-
-
+        MySQLContainer<?> container=new MySQLContainer<>(DockerImageName.parse("mysql:8.0"));
+        container.start();
+        return container;
     }
 }

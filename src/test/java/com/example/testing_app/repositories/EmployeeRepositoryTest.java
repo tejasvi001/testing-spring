@@ -17,10 +17,10 @@ import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-//@Import(TestContainerConfiguration.class)
+@Import(TestContainerConfiguration.class)
 @DataJpaTest
 
-@TestPropertySource(locations = "classpath:application-test.properties")
+//@TestPropertySource(locations = "classpath:application-test.properties")
 class EmployeeRepositoryTest {
     @Autowired
     private EmployeeRepository employeeRepository;
