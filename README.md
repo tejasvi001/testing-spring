@@ -13,7 +13,7 @@ Certainly! Here is a sample **README.md** for your GitHub repository. This READM
 
 _Embark on your testing journey with JUnit and Mockito! Dive deep into JUnit annotations, assert methods, and Mocking for effective Spring Boot unit testing._
 
-![JUnit](https://img.shields.io/badge/tested%20with://img.shields.io/badge/coverage://img.shields.io/badge/build Features
+
 
 - ✅ Comprehensive JUnit-based unit testing examples.
 - ✅ Dive deep into JUnit annotations and assertion methods.
