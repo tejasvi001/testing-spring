@@ -1,14 +1,3 @@
-Certainly! Here is a sample **README.md** for your GitHub repository. This README covers:
-
-- Project description (Spring Boot JUnit Testings as per your image)
-- Features and tech stack
-- Directory structure
-- Instructions for running unit tests, integration tests
-- JaCoCo test report generation
-- Badges placeholders
-
-***
-
 # Spring Boot JUnit Testings
 
 _Embark on your testing journey with JUnit and Mockito! Dive deep into JUnit annotations, assert methods, and Mocking for effective Spring Boot unit testing._
