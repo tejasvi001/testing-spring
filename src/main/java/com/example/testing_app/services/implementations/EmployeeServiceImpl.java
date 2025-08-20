@@ -16,69 +16,68 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class EmployeeServiceImpl implements EmployeeService {
+public class EmployeeServiceImpl  {
+
     private final EmployeeRepository employeeRepository;
     private final ModelMapper modelMapper;
-
-    @Override
-    public List<EmployeeDTO> getAllEmployees() {
-        log.info("Fetching all employees");
-        List<EmployeeEntity> employees=employeeRepository.findAll();
-        return employees.stream()
-                .map(employeeEntity -> modelMapper.map(employeeEntity,EmployeeDTO.class))
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public EmployeeDTO getEmployeeById(Long id) throws ResourceNotFoundException {
-        log.info("Trying to fetch employee by id {}", id);
-        EmployeeEntity employee=employeeRepository.findById(id)
-                .orElseThrow(()->{
-                    log.error("No employee found with id {}", id);
-                    return new ResourceNotFoundException("No employee exists with id "+ id);
+        log.info("Fetching employee with id: {}", id);
+        EmployeeEntity employee = employeeRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Employee not found with id: {}", id);
+                    return new ResourceNotFoundException("Employee not found with id: " + id);
                 });
-        log.info("Successfully fetched the employee with id {}", id);
-        return modelMapper.map(employee,EmployeeDTO.class);
+        log.info("Successfully fetched employee with id: {}", id);
+        return modelMapper.map(employee, EmployeeDTO.class);
     }
 
-    @Override
-    public EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO) {
-        log.info("trying to create a employee with email - {}", employeeDTO.getEmail());
-        List<EmployeeEntity> existingEmployees=employeeRepository.findByEmail(employeeDTO.getEmail());
-        if(!existingEmployees.isEmpty()){
-            log.error("There already exists with the given email - "+employeeDTO.getEmail());
-            throw new RuntimeException("There already exists with the given email - "+employeeDTO.getEmail());
+
+    public EmployeeDTO createNewEmployee(EmployeeDTO employeeDto) {
+        log.info("Creating new employee with email: {}", employeeDto.getEmail());
+        List<EmployeeEntity> existingEmployees = employeeRepository.findByEmail(employeeDto.getEmail());
+
+        if (!existingEmployees.isEmpty()) {
+            log.error("Employee already exists with email: {}", employeeDto.getEmail());
+            throw new RuntimeException("Employee already exists with email: " + employeeDto.getEmail());
         }
-        EmployeeEntity employee=modelMapper.map(employeeDTO, EmployeeEntity.class);
-        EmployeeEntity saved=employeeRepository.save(employee);
-        log.info("Successfully created employee with email{}", employee.getEmail());
-        return modelMapper.map(saved, EmployeeDTO.class);
+        EmployeeEntity newEmployee = modelMapper.map(employeeDto, EmployeeEntity.class);
+        EmployeeEntity savedEmployee = employeeRepository.save(newEmployee);
+        log.info("Successfully created new employee with id: {}", savedEmployee.getId());
+        return modelMapper.map(savedEmployee, EmployeeDTO.class);
     }
 
-    @Override
-    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) {
-        log.info("trying to update employee with id {}", id);
-        boolean exists=employeeRepository.existsById(id);
-        if(!exists){
-            log.error("There is no employee with id {} - ",id);
-            throw new RuntimeException("No employee exists with the given id - "+id);
+
+    public EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDto) throws ResourceNotFoundException {
+        log.info("Updating employee with id: {}", id);
+        EmployeeEntity employee = employeeRepository.findById(id)
+                .orElseThrow(() -> {
+                    log.error("Employee not found with id: {}", id);
+                    return new ResourceNotFoundException("Employee not found with id: " + id);
+                });
+
+        if (!employee.getEmail().equals(employeeDto.getEmail())) {
+            log.error("Attempted to update email for employee with id: {}", id);
+            throw new RuntimeException("The email of the employee cannot be updated");
         }
-        EmployeeEntity employee=modelMapper.map(employeeDTO,EmployeeEntity.class);
+
+        modelMapper.map(employeeDto, employee);
         employee.setId(id);
-        EmployeeEntity saved=employeeRepository.save(employee);
-        log.info("Update employee with id - {} ",id);
-        return modelMapper.map(saved, EmployeeDTO.class);
+
+        EmployeeEntity savedEmployee = employeeRepository.save(employee);
+        log.info("Successfully updated employee with id: {}", id);
+        return modelMapper.map(savedEmployee, EmployeeDTO.class);
     }
 
-    @Override
-    public void deleteById(Long id) {
-        log.info("Trying to delete employee with id {}",id);
-        boolean exists=employeeRepository.existsById(id);
-        if(!exists){
-            log.error("no employee with id {} - ",id);
-            throw new RuntimeException("No employee exists with the given id - "+id);
+
+    public void deleteEmployee(Long id) throws ResourceNotFoundException {
+        log.info("Deleting employee with id: {}", id);
+        boolean exists = employeeRepository.existsById(id);
+        if (!exists) {
+            log.error("Employee not found with id: {}", id);
+            throw new ResourceNotFoundException("Employee not found with id: " + id);
         }
+
         employeeRepository.deleteById(id);
-        log.info("Successfully deleted employee with id - {}" ,id);
+        log.info("Successfully deleted employee with id: {}", id);
     }
 }

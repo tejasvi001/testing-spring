@@ -12,7 +12,7 @@ public interface EmployeeService {
 
     EmployeeDTO createNewEmployee(EmployeeDTO employeeDTO);
 
-    EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO);
+    EmployeeDTO updateEmployee(Long id, EmployeeDTO employeeDTO) throws ResourceNotFoundException;
 
     void deleteById(Long id);
 }

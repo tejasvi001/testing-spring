@@ -4,6 +4,7 @@ package com.example.testing_app.controllers;
 import com.example.testing_app.dtos.EmployeeDTO;
 import com.example.testing_app.exceptions.ResourceNotFoundException;
 import com.example.testing_app.services.EmployeeService;
+import com.example.testing_app.services.implementations.EmployeeServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id,@RequestBody EmployeeDTO employeeDTO){
+    public ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable Long id,@RequestBody EmployeeDTO employeeDTO) throws ResourceNotFoundException {
         EmployeeDTO employee=employeeService.updateEmployee(id,employeeDTO);
         return ResponseEntity.ok(employee);
     }
